@@ -372,14 +372,20 @@ int main(int argc, char** argv){
                         for (int i = 1; i < mobyCount; i++)
                         {
                             Moby* m = database->getMobyPointer(i);
-                            std::cout << m << std::endl;
                             if (&m->pVars == 0x00000000) continue;
                             if (&m->pVars->targetVars == 0x00000000) continue;
-
+                            //for now make them bigger
+                            uint8_t* scale = *(uint8_t*)m->scale * 2;
+                            PS2_emu_target.writeTargetMemory(database->getMobyAddress(i) + 0x2C, scale, sizeof(float));
+                            /*
                             m->pVars->targetVars->maxHitPoints *= 2; // Just hardcode double for now
                             float maxHealth = m->pVars->targetVars->maxHitPoints;
                             m->pVars->targetVars->hitPoints = maxHealth;
+                            */
                         }
+                        std::cout << "Complete!" << std::endl;
+
+                        
                     }
 
                     ImGui::EndChild();
