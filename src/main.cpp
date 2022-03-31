@@ -367,25 +367,29 @@ int main(int argc, char** argv){
                     {
                         // will check every moby and try double health
                         int mobyCount = database->getMobysCount();
-
+                       
                         // Make i start at 1 to skip ratchet moby
-                        for (int i = 1; i < mobyCount; i++)
+                        for (int i = 0; i < mobyCount; i++)
                         {
                             Moby* m = database->getMobyPointer(i);
-                            if (&m->pVars == 0x00000000) continue;
-                            if (&m->pVars->targetVars == 0x00000000) continue;
-                            //for now make them bigger
-                            uint8_t* scale = *(uint8_t*)m->scale * 2;
-                            PS2_emu_target.writeTargetMemory(database->getMobyAddress(i) + 0x2C, scale, sizeof(float));
-                            /*
-                            m->pVars->targetVars->maxHitPoints *= 2; // Just hardcode double for now
-                            float maxHealth = m->pVars->targetVars->maxHitPoints;
-                            m->pVars->targetVars->hitPoints = maxHealth;
-                            */
+                            if (m->pVars == 0x00000000 || m->pVars == 0xFFFFFFFF) continue;
+                            Pointer32 subVars = PS2_emu_target.readTargetMemory(m->pVars, ((uint8_t*)sizeof(uintptr_t)), sizeof(Pointer32));
+                            if (subVars == 0x00000000) continue; // we dont have subvars
+                            Pointer32 targetVars = PS2_emu_target.readTargetMemory(subVars, ((uint8_t*)sizeof(uintptr_t)), sizeof(Pointer32));
+                            if (targetVars == 0x00000000) continue; // we dont have target vars
+                            
+                            // if we are here then we most likley found the health 
+                            float health = PS2_emu_target.readTargetMemory(targetVars, ((uint8_t*)sizeof(int)), sizeof(float));
+                            
+                            // Hardcode triple for now?
+                            health *= 3;
+
+                            PS2_emu_target.writeTargetMemory(targetVars, ((uint8_t*)&health), sizeof(float));
                         }
                         std::cout << "Complete!" << std::endl;
 
-                        
+              
+
                     }
 
                     ImGui::EndChild();

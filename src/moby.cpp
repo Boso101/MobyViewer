@@ -37,7 +37,7 @@ namespace MobyTool {
 		m->currentAnimation = *(uint32_t*)((uintptr_t)buf + 0x5C);
 		m->unk_60 = *(uint32_t*)((uintptr_t)buf + 0x60);
 		m->updateFunction = *(Pointer32*)((uintptr_t)buf + 0x64);
-		m->pVars = (SubVars*)(buf + 0x68);
+		m->pVars = *(Pointer32*)(uintptr_t)(buf + 0x68);
 		m->unk_6C = *(uint32_t*)((uintptr_t)buf + 0x6C);
 		m->unk_70 = *(uint32_t*)((uintptr_t)buf + 0x70);
 		m->unk_74 = *(uint32_t*)((uintptr_t)buf + 0x74);
