@@ -11,6 +11,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <iostream>
 
 #ifndef NDEBUG
 #define RESSOURCES_PATH "../data/"
@@ -361,6 +362,26 @@ int main(int argc, char** argv){
                         ImGui::EndTable();
                     }
 
+
+                    if (ImGui::Button("Buff Enemies"))
+                    {
+                        // will check every moby and try double health
+                        int mobyCount = database->getMobysCount();
+
+                        // Make i start at 1 to skip ratchet moby
+                        for (int i = 1; i < mobyCount; i++)
+                        {
+                            Moby* m = database->getMobyPointer(i);
+                            std::cout << m << std::endl;
+                            if (&m->pVars == 0x00000000) continue;
+                            if (&m->pVars->targetVars == 0x00000000) continue;
+
+                            m->pVars->targetVars->maxHitPoints *= 2; // Just hardcode double for now
+                            float maxHealth = m->pVars->targetVars->maxHitPoints;
+                            m->pVars->targetVars->hitPoints = maxHealth;
+                        }
+                    }
+
                     ImGui::EndChild();
                 }
                 ImGui::SameLine();
@@ -460,7 +481,6 @@ int main(int argc, char** argv){
                     }
                     ImGui::EndChild();
                 }
-
           
            
 

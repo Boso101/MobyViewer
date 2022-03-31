@@ -52,7 +52,7 @@ libs/imgui/imgui_draw.cpp
 libs/imgui/imgui_tables.cpp
 libs/imgui/imgui_widgets.cpp
 libs/imgui/backends/imgui_impl_glfw.cpp
-libs/imgui/backends/imgui_impl_opengl3.cpp )
+libs/imgui/backends/imgui_impl_opengl3.cpp  "src/SubVars.h")
 
 if (WIN32)
 	#Only Windows has precompiled library

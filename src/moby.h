@@ -1,6 +1,7 @@
 #ifndef SRC_MOBY_H
 #define SRC_MOBY_H
 #include <cstdint>
+#include "SubVars.h"
 
 #define MOBY_SIZE 0x100
 
@@ -53,7 +54,7 @@ typedef struct Moby {//Please note, size of unk fields may NOT be the size of ac
 	uint32_t currentAnimation;  //0x5C
 	uint32_t unk_60; //0x60
 	Pointer32 updateFunction; //0x64
-	Pointer32 pVars; //0x68
+	SubVars* pVars; //0x68
 	uint32_t unk_6C; //0x6C
 	uint32_t unk_70; //0x70 
 	uint32_t unk_74; //0x74
